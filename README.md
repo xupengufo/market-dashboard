@@ -1,10 +1,12 @@
 # Market Dashboard
 
-**Live Site**: https://market-dashboard-4bd66d.gitlab.io
+**Live Site**: https://xupengufo.github.io/market-dashboard/
 
-Static stock dashboard with daily auto-refresh via GitLab CI/CD (Yahoo Finance), hosted on GitLab Pages.
+Static stock dashboard with daily auto-refresh via GitHub Actions (Yahoo Finance), hosted on GitHub Pages.
 
 **Data Updates**: Mon–Fri at 16:30 US Eastern (20:30 UTC)
+
+> Origin: this repository is a copy of [traderwillhu/market_dashboard](https://gitlab.com/traderwillhu/market_dashboard) (MIT License, Copyright © 2026 Will Hu), restyled with a light, elegant theme. The `.gitlab-ci.yml` from the original was removed; deployment now runs on GitHub Pages + GitHub Actions.
 
 ## Features
 
@@ -40,8 +42,8 @@ Static stock dashboard with daily auto-refresh via GitLab CI/CD (Yahoo Finance),
 - **User Experience**:
   - Keyboard navigation (Arrow keys to browse, H for holdings)
   - Column sorting (click any header to sort)
-  - Dark theme UI
-  - Auto-refresh daily via GitLab CI/CD
+  - Light theme UI
+  - Auto-refresh daily via GitHub Actions
 
 ## Build data locally
 
@@ -62,44 +64,29 @@ python -m http.server 8000
 
 Then in your browser open: **http://localhost:8000**
 
-## Publish to GitLab (first time)
+## Deploy to GitHub Pages
 
-1. On [GitLab](https://gitlab.com/new), create a **new repository** (e.g. `market-dashboard`). Do **not** add a README or .gitignore.
-2. In a terminal, from the `market-dashboard` folder run (replace `YOUR_USERNAME` and repo name if different):
-
-```bash
-git remote add origin git@gitlab.com:YOUR_USERNAME/market-dashboard.git
-git branch -M main
-git push -u origin main
-```
-
-3. Then follow **Deploy to GitLab Pages** below.
-
-## Deploy to GitLab Pages
-
-1. Create a new GitLab repository and push this directory's contents to it (or push as the repo root).
+1. Push this directory to a GitHub repository.
 2. **Before first deploy** you need initial data. Either:
-   - **Recommended:** In the repo go to **CI/CD > Pipelines** > Run Pipeline. When it finishes, it will commit `data/` to the repo.
+   - **Recommended:** In the repo go to **Actions** > **Refresh dashboard data** > **Run workflow**. When it finishes, it will commit `data/` to the repo.
    - Or run locally: `python scripts/build_data.py --out-dir data`, then `git add data/`, commit and push.
-3. In the repo **Settings > Pages**:
-   - The site will be automatically deployed from the `main` branch.
-   - Enable GitLab Pages in Settings if not already enabled.
-4. The pipeline runs daily at 20:30 UTC (Mon-Fri) to refresh data; you can also run it manually from **CI/CD > Pipelines**.
+3. Enable Pages: **Settings > Pages > Build and deployment > Source: Deploy from a branch**, branch `main`, folder `/` (root).
+4. The workflow runs daily at 20:30 UTC (Mon-Fri) to refresh data; you can also run it manually from **Actions**.
 
-Site URL: `https://<your-username>.gitlab.io/<repo-name>/`
+Site URL: `https://<your-username>.github.io/<repo-name>/`
 
 ## Project structure
 
 ```
 market-dashboard/
-├── .gitlab-ci.yml                    # Daily data refresh (GitLab CI/CD)
-├── scripts/build_data.py             # Fetches data, outputs JSON + charts
-├── data/                             # Generated (commit for Pages)
+├── .github/workflows/refresh_data.yml  # Daily data refresh (GitHub Actions)
+├── scripts/build_data.py               # Fetches data, outputs JSON + charts
+├── data/                               # Generated (commit for Pages)
 │   ├── snapshot.json
 │   ├── events.json
 │   ├── meta.json
 │   └── charts/*.png
-├── index.html                        # Static frontend
+├── index.html                          # Static frontend
 ├── requirements.txt
 └── README.md
 ```

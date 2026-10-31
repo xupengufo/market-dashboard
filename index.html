@@ -3,40 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Chart Viewer</title>
+    <title>Market Dashboard</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; height: 100vh; background-color: #1a1a1a; color: #e0e0e0; }
-        .ticker-table th.sorted-column { background-color: #3b4a6b !important; }
-        .ticker-table td.sorted-column { background-color: #2a3441; }
-        .ticker-list { width: 800px; background-color: #1a1a1a; padding: 0; overflow-y: auto; border-right: 1px solid #333; }
-        .chart-container { flex: 1; display: flex; flex-direction: column; padding: 10px; background-color: #1a1a1a; min-height: 0; }
-        .group-container { margin-bottom: 15px; }
-        .group-header {
-            background-color: #2d3748; padding: 6px 8px; font-weight: bold; font-size: 0.9em;
-            display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
-            position: sticky; top: 0; z-index: 3; color: #e0e0e0; border-bottom: 1px solid #444;
+        :root {
+            --bg: #f4f5f7;
+            --panel: #ffffff;
+            --panel-2: #f8fafc;
+            --text: #1e293b;
+            --text-strong: #0f172a;
+            --muted: #64748b;
+            --faint: #94a3b8;
+            --border: #e2e8f0;
+            --border-soft: #f1f5f9;
+            --accent: #1d4ed8;
+            --accent-soft: #eff6ff;
+            --up: #059669;
+            --down: #dc2626;
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 16px rgba(15, 23, 42, 0.04);
+            --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.12);
         }
-        .group-header:hover { background-color: #374151; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh;
+            background-color: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
+        }
+        .site-header {
+            flex: none; display: flex; align-items: center; gap: 16px;
+            padding: 14px 20px 12px; background: var(--panel); border-bottom: 1px solid var(--border);
+        }
+        .site-title {
+            font-family: Georgia, "Times New Roman", serif; font-size: 22px; font-weight: 600;
+            letter-spacing: 0.01em; color: var(--text-strong); line-height: 1.2;
+        }
+        .site-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; letter-spacing: 0.02em; }
+        .site-meta { margin-left: auto; font-size: 12px; color: var(--faint); text-align: right; line-height: 1.6; }
+        main.layout { flex: 1; display: flex; min-height: 0; }
+        .ticker-table th.sorted-column { background-color: #eef2ff !important; }
+        .ticker-table td.sorted-column { background-color: #f8fafc; }
+        .ticker-list { width: 820px; flex: none; background-color: var(--panel); padding: 0; overflow-y: auto; border-right: 1px solid var(--border); }
+        .ticker-list > .economic-events, .ticker-list > .market-breadth { margin: 14px 14px 10px; }
+        .ticker-list > .column-guide { margin: 0 14px 12px; }
+        #groups-container { padding: 0 14px 8px; }
+        .chart-container { flex: 1; display: flex; flex-direction: column; padding: 16px; background-color: var(--bg); min-height: 0; }
+        #single-chart-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 12px; box-shadow: var(--shadow); }
+        .group-container { margin-bottom: 14px; }
+        .group-header {
+            background-color: var(--panel); padding: 10px 2px 8px; font-weight: 600; font-size: 0.82em;
+            display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+            position: sticky; top: 0; z-index: 3; color: var(--text-strong); border-bottom: 1px solid var(--border);
+            text-transform: uppercase; letter-spacing: 0.06em;
+        }
+        .group-header:hover { background-color: var(--panel); }
         .group-header-title { cursor: pointer; }
         .group-header-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
         .group-chart-btn {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            background-color: #1f2933;
-            color: #e0e0e0;
-            padding: 4px 8px;
-            border: 1px solid #4a5568;
-            border-radius: 3px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            font-size: 11px; font-weight: 600; background-color: var(--panel); color: #334155;
+            padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.03em;
         }
-        .group-chart-btn:hover { background-color: #374151; }
+        .group-chart-btn:hover { background-color: var(--panel-2); }
         .legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .legend-item { padding: 2px 6px; border-radius: 6px; font-size: 0.75em; color: white; user-select: none; }
-        .ticker-table { width: 100%; border-collapse: collapse; font-size: 0.85em; table-layout: fixed; }
+        .legend-item { padding: 2px 8px; border-radius: 999px; font-size: 0.75em; color: white; user-select: none; font-weight: 600; }
+        .ticker-table { width: 100%; border-collapse: collapse; font-size: 0.85em; table-layout: fixed; font-variant-numeric: tabular-nums; }
         .ticker-table th:nth-child(1), .ticker-table td:nth-child(1) { width: 105px; padding: 6px 8px; overflow: hidden; }
         .ticker-table th:nth-child(2), .ticker-table td:nth-child(2) { width: 55px; padding: 6px 4px; overflow: hidden; }
         .ticker-table th:nth-child(3), .ticker-table td:nth-child(3) { width: 59px; padding: 6px 4px; overflow: hidden; }
@@ -48,241 +77,161 @@
         .ticker-table th:nth-child(9), .ticker-table td:nth-child(9) { width: 44px; padding: 6px 4px; overflow: hidden; }
         .ticker-table thead { position: sticky; z-index: 2; }
         .ticker-table th {
-            text-align: left; padding: 6px 8px; background-color: #2d3748; cursor: pointer; user-select: none;
-            font-weight: bold; border-bottom: 1px solid #444; color: #e0e0e0;
+            text-align: left; padding: 8px; background-color: var(--panel); cursor: pointer; user-select: none;
+            font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border); color: var(--muted);
         }
-        .ticker-table th:hover { background-color: #374151; }
+        .ticker-table th:hover { background-color: var(--panel-2); }
         .ticker-table th.sortable { cursor: pointer; }
-        .ticker-table th.sortable:hover { color: #fff; }
+        .ticker-table th.sortable:hover { color: var(--text-strong); }
         .ticker-table th.sort-asc::after { content: " ↑"; }
         .ticker-table th.sort-desc::after { content: " ↓"; }
-        .ticker-table td { padding: 6px 8px; border-bottom: 1px solid #333; vertical-align: middle; color: #e0e0e0; }
-        .ticker-row { cursor: pointer; transition: all 0.2s; }
-        .ticker-row:hover { background-color: #2a2a2a; }
-        .ticker-row.active { background-color: #374151; }
-        .ticker-table td.price-up { color: #10b981 !important; font-weight: bold; }
-        .ticker-table td.price-down { color: #ef4444 !important; font-weight: bold; }
+        .ticker-table td { padding: 7px 8px; border-bottom: 1px solid var(--border-soft); vertical-align: middle; color: var(--text); }
+        .ticker-row { cursor: pointer; transition: background-color 0.15s; }
+        .ticker-row:hover { background-color: var(--panel-2); }
+        .ticker-row.active { background-color: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+        .ticker-table td.price-up { color: var(--up) !important; font-weight: 700; }
+        .ticker-table td.price-down { color: var(--down) !important; font-weight: 700; }
         .value-visualization { position: relative; display: inline-block; padding: 2px 4px; border-radius: 3px; min-width: 45px; max-width: 100%; text-align: right; }
-        .value-bar { position: absolute; top: 0; height: 100%; border-radius: 3px; opacity: 0.2; z-index: 0; max-width: 100%; }
-        .value-bar.positive { background-color: #10b981; left: 0; right: auto; }
-        .value-bar.negative { background-color: #ef4444; right: 0; left: auto; }
+        .value-bar { position: absolute; top: 0; height: 100%; border-radius: 3px; opacity: 0.16; z-index: 0; max-width: 100%; }
+        .value-bar.positive { background-color: var(--up); left: 0; right: auto; }
+        .value-bar.negative { background-color: var(--down); right: 0; left: auto; }
         .value-text { position: relative; z-index: 1; }
         .rs-chart { width: 100%; max-width: 100px; height: 30px; display: block; object-fit: contain; }
         .tradingview-widget-container { flex: 1; min-height: 0; }
-        .key-hint { font-size: 11px; color: #9ca3af; margin-top: 15px; padding: 5px; background-color: #2d3748; border-radius: 3px; position: sticky; bottom: 0; border: 1px solid #444; }
-        .long-etf { color: #4ade80; cursor: pointer; text-decoration: underline; }
-        .short-etf { color: #f87171; cursor: pointer; text-decoration: underline; }
+        .key-hint { font-size: 11px; color: var(--muted); margin: 0 14px 14px; padding: 10px 12px; background-color: var(--panel-2); border-radius: 10px; position: sticky; bottom: 0; border: 1px solid var(--border); }
+        .long-etf { color: var(--up); cursor: pointer; text-decoration: underline; }
+        .short-etf { color: var(--down); cursor: pointer; text-decoration: underline; }
         .etf-list { white-space: nowrap; font-size: 0.8em; }
         .etf-list span:hover { font-weight: bold; }
         .ticker-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            background-color: #4a5568;
-            color: #e0e0e0;
+            display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px;
+            background-color: var(--accent-soft); color: var(--accent); font-weight: 600;
         }
         .abc-rating { display: inline-block; width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: bold; color: white; }
-        .abc-a { background-color: #3b82f6; }
-        .abc-b { background-color: #10b981; }
-        .abc-c { background-color: #f59e0b; }
+        .abc-a { background-color: #2563eb; }
+        .abc-b { background-color: var(--up); }
+        .abc-c { background-color: #d97706; }
         .economic-events { margin-bottom: 10px; }
         .market-breadth { margin-bottom: 10px; position: relative; }
         .events-button,
         .column-guide-btn {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: bold;
-            background-color: #2d3748;
-            color: #e0e0e0;
-            padding: 8px 12px;
-            border: 1px solid #4a5568;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
+            font-size: 12px; font-weight: 600; background-color: var(--panel); color: #334155;
+            padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;
+            width: 100%; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
         }
         .events-button:hover,
-        .column-guide-btn:hover { background-color: #374151; }
+        .column-guide-btn:hover { background-color: var(--panel-2); border-color: #cbd5e1; }
         .events-content {
-            display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: #2d3748;
-            min-width: 100%; z-index: 1000; border-radius: 4px; max-height: 400px; overflow-y: auto;
-            padding: 10px 12px; border: 1px solid #4a5568; margin-top: 4px;
-            font-family: Arial, sans-serif; font-size: 0.8em; color: #e0e0e0; line-height: 1.5;
+            display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: var(--panel);
+            min-width: 100%; z-index: 1000; border-radius: 12px; max-height: 400px; overflow-y: auto;
+            padding: 10px 12px; border: 1px solid var(--border); margin-top: 4px;
+            font-size: 0.8em; color: #334155; line-height: 1.5; box-shadow: var(--shadow-lg);
         }
         .economic-events:hover .events-content { display: block; }
         .event-item {
-            padding: 10px 12px; border-bottom: 1px solid #4a5568; background-color: #1a1a1a;
-            font-family: Arial, sans-serif; font-size: 0.8em; line-height: 1.5;
+            padding: 10px 12px; border-bottom: 1px solid var(--border-soft); background-color: var(--panel);
+            font-size: 0.8em; line-height: 1.5;
         }
-        .event-item:hover { background-color: #374151; }
+        .event-item:hover { background-color: var(--panel-2); }
         .event-item:last-child { border-bottom: none; }
-        .event-item .event-datetime { font-weight: bold; color: #a5b4fc; }
-        .event-item .event-name { color: #cbd5e1; }
+        .event-item .event-datetime { font-weight: bold; color: var(--accent); }
+        .event-item .event-name { color: #334155; }
         .column-guide { margin-bottom: 10px; position: relative; }
         .column-guide-content {
-            display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: #2d3748;
-            z-index: 999; border-radius: 4px; max-height: 420px; overflow-y: auto; padding: 10px 12px;
-            border: 1px solid #4a5568; margin-top: 4px; font-size: 0.8em; color: #e0e0e0; line-height: 1.5;
+            display: none; position: absolute; top: 100%; left: 0; right: 0; background-color: var(--panel);
+            z-index: 999; border-radius: 12px; max-height: 420px; overflow-y: auto; padding: 10px 12px;
+            border: 1px solid var(--border); margin-top: 4px; font-size: 0.8em; color: #334155; line-height: 1.5;
+            box-shadow: var(--shadow-lg);
         }
         .column-guide:hover .column-guide-content { display: block; }
         .column-guide dl { margin: 0; }
-        .column-guide dt { font-weight: bold; color: #a5b4fc; margin-top: 8px; }
+        .column-guide dt { font-weight: bold; color: var(--accent); margin-top: 8px; }
         .column-guide dt:first-child { margin-top: 0; }
-        .column-guide dd { margin: 2px 0 0 12px; color: #cbd5e1; }
-        .loading-msg { padding: 20px; text-align: center; color: #9ca3af; }
+        .column-guide dd { margin: 2px 0 0 12px; color: #475569; }
+        .loading-msg { padding: 20px; text-align: center; color: var(--faint); }
         .multi-chart-panel { flex: 1; min-height: 0; overflow: auto; display: none; }
-        .multi-group-title { margin: 8px 0 4px; font-size: 0.85rem; font-weight: 600; color: #9ca3af; }
-        .multi-chart-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .multi-group-title { margin: 8px 0 6px; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+        .multi-chart-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
         .econ-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
+            display: none; align-items: center; justify-content: center; z-index: 9999;
         }
         .econ-modal {
-            background: #111827;
-            border-radius: 8px;
-            border: 1px solid #4a5568;
-            padding: 8px 8px 4px;
-            max-width: 440px;
-            width: 440px;
-            max-height: 600px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            background: var(--panel); border-radius: 16px; border: 1px solid var(--border);
+            padding: 12px 12px 8px; max-width: 440px; width: 440px; max-height: 600px; box-shadow: var(--shadow-lg);
         }
         .econ-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #e0e0e0;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 6px; font-size: 0.95rem; font-weight: 600; color: var(--text-strong);
         }
         .econ-modal-close {
-            background: transparent;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            font-size: 1.1rem;
-            line-height: 1;
-            padding: 0 2px;
+            background: transparent; border: none; color: var(--faint); cursor: pointer;
+            font-size: 1.1rem; line-height: 1; padding: 0 2px;
         }
-        .econ-modal-close:hover { color: #ffffff; }
+        .econ-modal-close:hover { color: var(--text-strong); }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: var(--panel-2); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--faint); }
         /* Holdings button and modal */
         .holdings-btn {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            font-weight: 600;
-            background-color: #1f2933;
-            color: #9ca3af;
-            width: 18px;
-            height: 18px;
-            padding: 0;
-            border: 1px solid #4a5568;
-            border-radius: 50%;
-            cursor: pointer;
-            text-transform: lowercase;
-            vertical-align: middle;
-            margin-left: 6px;
+            font-size: 10px; font-weight: 600; background-color: var(--panel); color: var(--muted);
+            width: 18px; height: 18px; padding: 0; border: 1px solid var(--border); border-radius: 50%;
+            cursor: pointer; text-transform: lowercase; vertical-align: middle; margin-left: 6px;
         }
-        .holdings-btn:hover { background-color: #374151; color: #e0e0e0; }
+        .holdings-btn:hover { background-color: var(--panel-2); color: var(--text-strong); }
         .holdings-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: transparent;
-            display: none;
-            z-index: 9999;
+            position: fixed; inset: 0; background: transparent; display: none; z-index: 9999;
         }
         .holdings-modal {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #111827;
-            border-radius: 8px;
-            border: 1px solid #4a5568;
-            padding: 8px 12px 4px;
-            max-width: 400px;
-            width: 400px;
-            max-height: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+            background: var(--panel); border-radius: 16px; border: 1px solid var(--border);
+            padding: 10px 12px 6px; max-width: 400px; width: 400px; max-height: 500px; box-shadow: var(--shadow-lg);
         }
         .holdings-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #e0e0e0;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 8px; font-size: 0.95rem; font-weight: 600; color: var(--text-strong);
         }
-        .holdings-modal-header-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .holdings-modal-actions {
-            display: flex;
-            gap: 6px;
-        }
+        .holdings-modal-header-left { display: flex; align-items: center; gap: 8px; }
+        .holdings-modal-actions { display: flex; gap: 6px; }
         .holdings-chart-btn {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            background-color: #1f2933;
-            color: #e0e0e0;
-            padding: 4px 8px;
-            border: 1px solid #4a5568;
-            border-radius: 3px;
-            cursor: pointer;
+            font-size: 11px; font-weight: 600; background-color: var(--panel); color: #334155;
+            padding: 4px 10px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
         }
-        .holdings-chart-btn:hover { background-color: #374151; }
-        .holdings-chart-btn.active { background-color: #374151; border-color: #60a5fa; }
+        .holdings-chart-btn:hover { background-color: var(--panel-2); }
+        .holdings-chart-btn.active { background-color: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
         .holdings-modal-close {
-            background: transparent;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            padding: 0 2px;
+            background: transparent; border: none; color: var(--faint); cursor: pointer;
+            font-size: 1.2rem; line-height: 1; padding: 0 2px;
         }
-        .holdings-modal-close:hover { color: #ffffff; }
-        .holdings-list {
-            max-height: 400px;
-            overflow-y: auto;
-            font-size: 0.85em;
-        }
+        .holdings-modal-close:hover { color: var(--text-strong); }
+        .holdings-list { max-height: 400px; overflow-y: auto; font-size: 0.85em; }
         .holdings-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 8px;
-            border-bottom: 1px solid #374151;
-            color: #e0e0e0;
-            cursor: pointer;
+            display: flex; justify-content: space-between; padding: 6px 8px;
+            border-bottom: 1px solid var(--border-soft); color: var(--text); cursor: pointer;
         }
         .holdings-item:last-child { border-bottom: none; }
-        .holdings-item:hover { background-color: #1f2933; }
-        .holdings-item.active { background-color: #374151; }
-        .holdings-rank { color: #9ca3af; width: 24px; }
-        .holdings-symbol { font-weight: 600; color: #60a5fa; cursor: pointer; }
-        .holdings-symbol:hover { color: #93c5fd; text-decoration: underline; }
-        .holdings-weight { color: #10b981; }
-        .holdings-loading { padding: 20px; text-align: center; color: #9ca3af; }
-        .holdings-error { padding: 20px; text-align: center; color: #ef4444; }
+        .holdings-item:hover { background-color: var(--panel-2); }
+        .holdings-item.active { background-color: var(--accent-soft); }
+        .holdings-rank { color: var(--faint); width: 24px; }
+        .holdings-symbol { font-weight: 600; color: var(--accent); cursor: pointer; }
+        .holdings-symbol:hover { color: #1e40af; text-decoration: underline; }
+        .holdings-weight { color: var(--up); }
+        .holdings-loading { padding: 20px; text-align: center; color: var(--faint); }
+        .holdings-error { padding: 20px; text-align: center; color: var(--down); }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <div>
+            <div class="site-title">Market Dashboard</div>
+            <div class="site-sub">180+ ETFs &middot; Trend grades &amp; relative strength &middot; Refreshed daily</div>
+        </div>
+        <div class="site-meta">Data: Yahoo Finance<br>Charts: TradingView</div>
+    </header>
+    <main class="layout">
     <div class="ticker-list">
         <div class="economic-events" style="position:relative; margin-bottom: 10px;">
             <button class="events-button" type="button" onclick="openEconomicCalendar()">📅 ECONOMIC CALENDAR</button>
@@ -304,7 +253,7 @@
             </div>
         </div>
         <div id="groups-container"></div>
-        <div class="key-hint">↑ ↓ Use arrow keys to navigate · Data auto-refreshed daily via GitLab CI/CD · Yahoo Finance</div>
+        <div class="key-hint">↑ ↓ Use arrow keys to navigate · Data auto-refreshed daily via GitHub Actions · Yahoo Finance</div>
     </div>
     <div id="economic-calendar-modal-overlay" class="econ-modal-overlay" onclick="closeEconomicCalendar(event)">
         <div class="econ-modal" onclick="event.stopPropagation()">
@@ -323,7 +272,7 @@
               </div>
               <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
               {
-              "colorTheme": "dark",
+              "colorTheme": "light",
               "isTransparent": false,
               "locale": "en",
               "countryFilter": "us",
@@ -348,7 +297,7 @@
               <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/" rel="noopener nofollow" target="_blank"><span class="blue-text">World markets</span></a><span class="trademark"> by TradingView</span></div>
               <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
               {
-              "colorTheme": "dark",
+              "colorTheme": "light",
               "dateRange": "12M",
               "locale": "en",
               "largeChartUrl": "",
@@ -357,7 +306,7 @@
               "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
               "plotLineColorFalling": "rgba(41, 98, 255, 1)",
               "gridLineColor": "rgba(240, 243, 250, 0)",
-              "scaleFontColor": "#DBDBDB",
+              "scaleFontColor": "#64748b",
               "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
               "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
               "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
@@ -437,6 +386,7 @@
         <div id="multi-chart-panel" class="multi-chart-panel"></div>
     </div>
 
+    </main>
     <script src="https://s3.tradingview.com/tv.js"></script>
     <script>
 (function() {
@@ -603,7 +553,7 @@
             wrap.className = 'tradingview-widget-container';
             wrap.style.height = '325px';  // 260px * 1.25
             wrap.style.width = '100%';
-            wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%;border:1px solid rgba(255,255,255,0.06);border-radius:4px;"></div>';
+            wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%;width:100%;border:1px solid rgba(15,23,42,0.08);border-radius:12px;"></div>';
             var script = document.createElement('script');
             script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
             script.async = true;
@@ -621,10 +571,10 @@
                 "save_image": false,
                 "style": "1",
                 "symbol": sym,
-                "theme": "dark",
+                "theme": "light",
                 "timezone": "America/Toronto",
-                "backgroundColor": "#1a1a1a",
-                "gridColor": "rgba(242, 242, 242, 0.06)",
+                "backgroundColor": "#ffffff",
+                "gridColor": "rgba(15, 23, 42, 0.06)",
                 "watchlist": [],
                 "withdateranges": false,
                 "compareSymbols": [],
@@ -702,11 +652,11 @@
             save_image: false,
             style: '1',
             symbol: symbol,
-            theme: 'dark',
+            theme: 'light',
             timezone: 'America/Toronto',
-            toolbar_bg: '#1a1a1a',
-            backgroundColor: '#1a1a1a',
-            gridColor: 'rgba(255,255,255,0.1)',
+            toolbar_bg: '#f1f5f9',
+            backgroundColor: '#ffffff',
+            gridColor: 'rgba(15, 23, 42, 0.08)',
             watchlist: [],
             withdateranges: true,
             studies: ['STD;MA%Ribbon'],
