@@ -1,8 +1,8 @@
 # Market Dashboard
 
-**Live Site**: https://xupengufo.github.io/market-dashboard/
+**Live Site**: https://market-dashboard-evd.pages.dev/
 
-Static stock dashboard with daily auto-refresh via GitHub Actions (Yahoo Finance), hosted on GitHub Pages.
+Static stock dashboard with daily auto-refresh (Yahoo Finance), hosted on Cloudflare Pages.
 
 **Data Updates**: Mon–Fri at 16:30 US Eastern (20:30 UTC)
 
@@ -64,16 +64,16 @@ python -m http.server 8000
 
 Then in your browser open: **http://localhost:8000**
 
-## Deploy to GitHub Pages
+## Deploy to Cloudflare Pages
 
 1. Push this directory to a GitHub repository.
-2. **Before first deploy** you need initial data. Either:
-   - **Recommended:** In the repo go to **Actions** > **Refresh dashboard data** > **Run workflow**. When it finishes, it will commit `data/` to the repo.
+2. In Cloudflare Dashboard, create a Pages project connected to the repo: production branch `main`, framework preset None, no build command, build output directory set to the repo root.
+3. Every push to `main` redeploys automatically.
+4. **Before first deploy** you need initial data. Either:
+   - Run the refresh workflow (`.github/workflows/refresh_data.yml`, Mon-Fri 20:30 UTC, or manually from **Actions**). When it finishes, it commits `data/` to the repo and Pages redeploys.
    - Or run locally: `python scripts/build_data.py --out-dir data`, then `git add data/`, commit and push.
-3. Enable Pages: **Settings > Pages > Build and deployment > Source: Deploy from a branch**, branch `main`, folder `/` (root).
-4. The workflow runs daily at 20:30 UTC (Mon-Fri) to refresh data; you can also run it manually from **Actions**.
 
-Site URL: `https://<your-username>.github.io/<repo-name>/`
+Site URL: `https://market-dashboard-evd.pages.dev/`
 
 ## Project structure
 
