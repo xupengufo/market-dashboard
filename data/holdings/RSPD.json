@@ -2,44 +2,44 @@
   "symbol": "RSPD",
   "holdings": [
     {
-      "symbol": "TPR",
-      "weight": 0.0265701
-    },
-    {
-      "symbol": "NCLH",
-      "weight": 0.0259072
-    },
-    {
-      "symbol": "HAS",
-      "weight": 0.0243636
-    },
-    {
-      "symbol": "GRMN",
-      "weight": 0.0241434
-    },
-    {
       "symbol": "CCL",
-      "weight": 0.0241393
-    },
-    {
-      "symbol": "DRI",
-      "weight": 0.0239926
-    },
-    {
-      "symbol": "RCL",
-      "weight": 0.0239309
+      "weight": 0.0238528
     },
     {
       "symbol": "MAR",
-      "weight": 0.023907699
+      "weight": 0.023697902
     },
     {
-      "symbol": "SBUX",
-      "weight": 0.0234931
+      "symbol": "RL",
+      "weight": 0.023340099
     },
     {
-      "symbol": "YUM",
-      "weight": 0.023476802
+      "symbol": "GRMN",
+      "weight": 0.0232442
+    },
+    {
+      "symbol": "TJX",
+      "weight": 0.0231582
+    },
+    {
+      "symbol": "HLT",
+      "weight": 0.022871202
+    },
+    {
+      "symbol": "ROST",
+      "weight": 0.022840701
+    },
+    {
+      "symbol": "EBAY",
+      "weight": 0.0226073
+    },
+    {
+      "symbol": "RCL",
+      "weight": 0.022574699
+    },
+    {
+      "symbol": "TPR",
+      "weight": 0.022326902
     }
   ]
 }

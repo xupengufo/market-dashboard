@@ -2,44 +2,44 @@
   "symbol": "XBI",
   "holdings": [
     {
+      "symbol": "TWST",
+      "weight": 0.022103
+    },
+    {
       "symbol": "MRNA",
-      "weight": 0.0224587
+      "weight": 0.020387102
     },
     {
-      "symbol": "ROIV",
-      "weight": 0.0174028
+      "symbol": "NTRA",
+      "weight": 0.0179663
     },
     {
-      "symbol": "PCVX",
-      "weight": 0.0172789
-    },
-    {
-      "symbol": "ACLX",
-      "weight": 0.016555801
-    },
-    {
-      "symbol": "RVMD",
-      "weight": 0.0159434
-    },
-    {
-      "symbol": "PRAX",
-      "weight": 0.0156675
+      "symbol": "IOVA",
+      "weight": 0.016200101
     },
     {
       "symbol": "AMGN",
-      "weight": 0.014981001
+      "weight": 0.015467
     },
     {
-      "symbol": "GILD",
-      "weight": 0.0149413
+      "symbol": "BIIB",
+      "weight": 0.0153887
     },
     {
-      "symbol": "FOLD",
-      "weight": 0.0148252
+      "symbol": "UTHR",
+      "weight": 0.0153512005
     },
     {
-      "symbol": "MIRM",
-      "weight": 0.014084199
+      "symbol": "ABBV",
+      "weight": 0.0149688
+    },
+    {
+      "symbol": "HALO",
+      "weight": 0.014759099
+    },
+    {
+      "symbol": "SYRE",
+      "weight": 0.0147035
     }
   ]
 }

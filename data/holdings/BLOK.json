@@ -2,44 +2,44 @@
   "symbol": "BLOK",
   "holdings": [
     {
-      "symbol": "WULF",
-      "weight": 0.041932803
+      "symbol": "HOOD",
+      "weight": 0.0404359
     },
     {
-      "symbol": "CIFR",
-      "weight": 0.0383664
+      "symbol": "FIGR",
+      "weight": 0.0356305
+    },
+    {
+      "symbol": "AMD",
+      "weight": 0.035403
     },
     {
       "symbol": "GLXY",
-      "weight": 0.0373138
+      "weight": 0.033723902
+    },
+    {
+      "symbol": "CIFR",
+      "weight": 0.0335535
     },
     {
       "symbol": "HUT",
-      "weight": 0.0364853
+      "weight": 0.032525
     },
     {
-      "symbol": "8473.T",
-      "weight": 0.0339946
-    },
-    {
-      "symbol": "HOOD",
-      "weight": 0.0328667
+      "symbol": "WULF",
+      "weight": 0.030492699
     },
     {
       "symbol": "OPRA",
-      "weight": 0.032300998
+      "weight": 0.0294322
     },
     {
-      "symbol": "BBBY",
-      "weight": 0.0317046
+      "symbol": "DELL",
+      "weight": 0.028612
     },
     {
       "symbol": "COIN",
-      "weight": 0.0315733
-    },
-    {
-      "symbol": "NU",
-      "weight": 0.0305178
+      "weight": 0.027762001
     }
   ]
 }

@@ -2,44 +2,44 @@
   "symbol": "WGMI",
   "holdings": [
     {
-      "symbol": "IREN",
-      "weight": 0.2052544
+      "symbol": "CIFR",
+      "weight": 0.1194116
     },
     {
-      "symbol": "CIFR",
-      "weight": 0.1988298
+      "symbol": "NBIS",
+      "weight": 0.0794409
+    },
+    {
+      "symbol": "CRWV",
+      "weight": 0.0742156
     },
     {
       "symbol": "HUT",
-      "weight": 0.0689665
+      "weight": 0.0650369
     },
     {
-      "symbol": "WULF",
-      "weight": 0.0644737
+      "symbol": "KEEL.TO",
+      "weight": 0.0616543
     },
     {
-      "symbol": "RIOT",
-      "weight": 0.057513498
+      "symbol": "IREN",
+      "weight": 0.0482615
     },
     {
-      "symbol": "CORZ",
-      "weight": 0.0530941
-    },
-    {
-      "symbol": "APLD",
-      "weight": 0.0498587
+      "symbol": "HIVE.TO",
+      "weight": 0.0477429
     },
     {
       "symbol": "MARA",
-      "weight": 0.0437572
+      "weight": 0.0463016
+    },
+    {
+      "symbol": "RIOT",
+      "weight": 0.0455722
     },
     {
       "symbol": "CLSK",
-      "weight": 0.043286398
-    },
-    {
-      "symbol": "BITF.TO",
-      "weight": 0.041753996
+      "weight": 0.0452244
     }
   ]
 }

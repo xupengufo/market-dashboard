@@ -3,7 +3,11 @@
   "holdings": [
     {
       "symbol": "CURA.TO",
-      "weight": 0.0895327
+      "weight": 0.131151
+    },
+    {
+      "symbol": "TRLV",
+      "weight": 0.1215021
     }
   ]
 }

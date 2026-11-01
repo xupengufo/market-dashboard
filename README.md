@@ -69,9 +69,7 @@ Then in your browser open: **http://localhost:8000**
 1. Push this directory to a GitHub repository.
 2. In Cloudflare Dashboard, create a Pages project connected to the repo: production branch `main`, framework preset None, no build command, build output directory set to the repo root.
 3. Every push to `main` redeploys automatically.
-4. **Before first deploy** you need initial data. Either:
-   - Run the refresh workflow (`.github/workflows/refresh_data.yml`, Mon-Fri 20:30 UTC, or manually from **Actions**). When it finishes, it commits `data/` to the repo and Pages redeploys.
-   - Or run locally: `python scripts/build_data.py --out-dir data`, then `git add data/`, commit and push.
+4. **Data refresh**: a scheduled job runs `scripts/build_data.py` Mon-Fri at 16:30 US Eastern, commits `data/` to `main`, and Cloudflare Pages redeploys automatically. (The original repo's GitHub Actions workflow is not used here.)
 
 Site URL: `https://market-dashboard-evd.pages.dev/`
 

@@ -2,44 +2,44 @@
   "symbol": "WCLD",
   "holdings": [
     {
-      "symbol": "HUBS",
-      "weight": 0.0177364
+      "symbol": "OKTA",
+      "weight": 0.023849001
     },
     {
-      "symbol": "FIG",
-      "weight": 0.017604899
-    },
-    {
-      "symbol": "BRZE",
-      "weight": 0.0172249
-    },
-    {
-      "symbol": "PAYC",
-      "weight": 0.0171928
-    },
-    {
-      "symbol": "TTAN",
-      "weight": 0.0169769
-    },
-    {
-      "symbol": "IOT",
-      "weight": 0.0168172
-    },
-    {
-      "symbol": "PD",
-      "weight": 0.0167302
+      "symbol": "CRWD",
+      "weight": 0.021264
     },
     {
       "symbol": "TWLO",
-      "weight": 0.0166918
+      "weight": 0.020016
     },
     {
-      "symbol": "FROG",
-      "weight": 0.0166487
+      "symbol": "PD",
+      "weight": 0.0188323
     },
     {
-      "symbol": "FSLY",
-      "weight": 0.016530499
+      "symbol": "NTSK",
+      "weight": 0.0185301
+    },
+    {
+      "symbol": "NET",
+      "weight": 0.0183025
+    },
+    {
+      "symbol": "DT",
+      "weight": 0.018109899
+    },
+    {
+      "symbol": "DDOG",
+      "weight": 0.0178939
+    },
+    {
+      "symbol": "VEEV",
+      "weight": 0.0177636
+    },
+    {
+      "symbol": "DOCN",
+      "weight": 0.0176958
     }
   ]
 }
